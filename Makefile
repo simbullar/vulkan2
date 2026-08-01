@@ -1,8 +1,9 @@
 CFLAGS = -std=c++17 -O2
 LDFLAGS = -lglfw -ldl -lpthread
-VULKANINCLUDEPATH = /Users/user/VulkanSDK/1.4.350.0/macOS/include/
-VULKANLIBPATH = /Users/user/VulkanSDK/1.4.350.0/macOS/lib/
-VULKANFRAMEWORKPATH = /Users/user/VulkanSDK/1.4.350.0/macOS/Frameworks/
+VULKANVERSION = 1.4.350.0
+VULKANINCLUDEPATH = /Users/user/VulkanSDK/$(VULKANVERSION)/macOS/include/
+VULKANLIBPATH = /Users/user/VulkanSDK/$(VULKANVERSION)/macOS/lib/
+VULKANFRAMEWORKPATH = /Users/user/VulkanSDK/$(VULKANVERSION)/macOS/Frameworks/
 STB_INCLUDE_PATH = /Users/user/VulkanSDK/libraries/stb
 
 HelloTriangle: main.cpp
