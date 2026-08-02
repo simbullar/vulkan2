@@ -3,5 +3,5 @@
 *.log
 tmp/
 Makefile
-.gitignore
-
+HelloTriangle
+shaders/*.spv
