@@ -13,7 +13,7 @@ STB_INCLUDE_PATH = /Users/user/VulkanSDK/libraries/stb
 
 .PHONY: shaders
 HelloTriangle: source/main.cpp
-	g++ $(CFLAGS) -o HelloTriangle source/main.cpp -F$(VULKANFRAMEWORKPATH) -framework vulkan -I$(VULKANINCLUDEPATH) -I$(STB_INCLUDE_PATH) -L$(VULKANLIBPATH) -Wl,-rpath,$(VULKANLIBPATH) -Wl,-rpath,$(VULKANFRAMEWORKPATH) $(LDFLAGS)
+	g++ $(CFLAGS) -o HelloTriangle source/*.cpp -F$(VULKANFRAMEWORKPATH) -framework vulkan -I$(VULKANINCLUDEPATH) -I$(STB_INCLUDE_PATH) -L$(VULKANLIBPATH) -Wl,-rpath,$(VULKANLIBPATH) -Wl,-rpath,$(VULKANFRAMEWORKPATH) $(LDFLAGS)
 clear:
 	rm HelloTriangle
 shaders:
