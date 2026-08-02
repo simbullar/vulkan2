@@ -3,7 +3,7 @@ GLM_PATH = /opt/homebrew/opt/glm
 
 CFLAGS = -std=c++17 -O2 -I$(GLFW_PATH)/include -I$(GLM_PATH)/include
 LDFLAGS = -L$(GLFW_PATH)/lib -L$(GLM_PATH)/lib -lglfw -ldl -lpthread 
-VULKANVERSION = YOUR_VULKAN_SDK_VERSION
+VULKANVERSION = 1.4.350.0
 VULKANINCLUDEPATH = /Users/user/VulkanSDK/$(VULKANVERSION)/macOS/include/
 VULKANLIBPATH = /Users/user/VulkanSDK/$(VULKANVERSION)/macOS/lib/
 VULKANFRAMEWORKPATH = /Users/user/VulkanSDK/$(VULKANVERSION)/macOS/Frameworks/
