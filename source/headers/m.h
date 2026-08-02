@@ -43,6 +43,9 @@ class HelloTriangleApplication {
         VkDeviceMemory textureImageMemory;
         VkImageView textureImageView;
         VkSampler textureSampler;
+        VkImage depthImage;
+        VkDeviceMemory depthImageMemory;
+        VkImageView depthImageView;
 
     bool framebufferResized;
     uint32_t currentFrame;
@@ -67,8 +70,12 @@ class HelloTriangleApplication {
     void mainLoop();
     void drawFrame();
     void cleanup();
+    void createDepthResources();
+    bool hasStencilComponent(VkFormat format);
+    VkFormat findDepthFormat();
+    VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
     void createTextureImageView();
-    VkImageView createImageView(VkImage image, VkFormat format);
+    VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
     void updateUniformBuffer(uint32_t currentImage);
     void createVertexBuffer();
     void createIndexBuffer();

@@ -20,8 +20,9 @@ void HelloTriangleApplication::initVulkan() {
     createRenderPass(); // * also all functions related to swapchain creation and such are also in graphics.cpp
     createDescriptorSetLayout(); // *
     createGraphicsPipeline(); // *
-    createFramebuffers(); // these both go into buffers_&_pools.cpp
     createCommandPool(); //
+    createDepthResources(); // * This and all the other depth-related things go to graphics.cpp
+    createFramebuffers();
     createTextureImage(); // * These ones go into textures_&_images.cpp,
     createTextureImageView(); // * along with other similar functions
     createTextureSampler(); // *
@@ -259,4 +260,19 @@ void HelloTriangleApplication::createSyncObjects() {
       throw std::runtime_error("failed to create semaphores");
     }
   }
+}
+
+VkFormat HelloTriangleApplication::findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) {
+    for (VkFormat format : candidates) {
+        VkFormatProperties props;
+        vkGetPhysicalDeviceFormatProperties(physicalDevice, format, &props);
+
+        if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) == features) {
+            return format;
+        } else if (tiling == VK_IMAGE_TILING_OPTIMAL && (props.optimalTilingFeatures & features) == features) {
+            return format;
+        }
+    }
+
+    throw std::runtime_error("failed to find supported format!");
 }

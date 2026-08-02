@@ -12,7 +12,7 @@ VULKANFRAMEWORKPATH = /Users/user/VulkanSDK/$(VULKANVERSION)/macOS/Frameworks/
 STB_INCLUDE_PATH = /Users/user/VulkanSDK/libraries/stb
 
 .PHONY: shaders
-HelloTriangle: source/main.cpp
+HelloTriangle: source/* source/headers/*
 	g++ $(CFLAGS) -o HelloTriangle source/*.cpp -F$(VULKANFRAMEWORKPATH) -framework vulkan -I$(VULKANINCLUDEPATH) -I$(STB_INCLUDE_PATH) -L$(VULKANLIBPATH) -Wl,-rpath,$(VULKANLIBPATH) -Wl,-rpath,$(VULKANFRAMEWORKPATH) $(LDFLAGS)
 clear:
 	rm HelloTriangle
