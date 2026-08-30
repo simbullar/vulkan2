@@ -1,9 +1,8 @@
-GLFW_PATH = /opt/homebrew/opt/glfw
 GLM_PATH = /opt/homebrew/opt/glm
 
-CFLAGS = -std=c++17 -O2 -I$(GLFW_PATH)/include -I$(GLM_PATH)/include -I$(VULKANINCLUDEPATH) -I$(STB_INCLUDE_PATH)
+CFLAGS = -std=c++17 -O2 /include -I$(GLM_PATH)/include -I$(VULKANINCLUDEPATH) -I$(STB_INCLUDE_PATH)
 
-LDFLAGS = -L$(GLFW_PATH)/lib -L$(GLM_PATH)/lib -lglfw -ldl -lpthread \
+LDFLAGS = -L$(GLFW_PATH)/lib -L$(GLM_PATH)/lib -ldl -lpthread \
 $(OBJC_LDFLAGS) -L$(VULKANLIBPATH) -Wl,-rpath,$(VULKANLIBPATH) -Wl,-rpath,$(VULKANFRAMEWORKPATH) \
 -F$(VULKANFRAMEWORKPATH) -framework vulkan -ObjC
 
