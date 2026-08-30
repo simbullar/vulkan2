@@ -59,7 +59,7 @@ void HelloTriangleApplication::run() {
      VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
      if (result == VK_ERROR_OUT_OF_DATE_KHR ) {
-       recreateSwapChain();
+       //recreateSwapChain();
        return;
      } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
        throw std::runtime_error("failed to acquired swap chain image!");
@@ -105,8 +105,8 @@ void HelloTriangleApplication::run() {
      result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
      if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
-       framebufferResized = false;
-       recreateSwapChain();
+       //framebufferResized = false;
+       //recreateSwapChain();
      } else if (result != VK_SUCCESS) {
        throw std::runtime_error("failed to present swap chain image!");
      }

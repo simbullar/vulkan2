@@ -65,7 +65,7 @@ void HelloTriangleApplication::cleanupSwapChain() {
 
 }
 
-void HelloTriangleApplication::recreateSwapChain() {
+/* void HelloTriangleApplication::recreateSwapChain() {
   int width = 0, height = 0;
   glfwGetFramebufferSize(window, &width, &height);
 
@@ -81,7 +81,7 @@ void HelloTriangleApplication::recreateSwapChain() {
   createSwapChain();
   createImageViews();
   createFramebuffers();
-}
+} */
 
 VkSurfaceFormatKHR HelloTriangleApplication::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) {
   for (const auto& availableFormat : availableFormats) {
@@ -107,8 +107,10 @@ VkExtent2D HelloTriangleApplication::chooseSwapExtent(const VkSurfaceCapabilitie
     return capabilities.currentExtent;
   } else {
     int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
+//    glfwGetFramebufferSize(window, &width, &height);
 
+    width = 350;
+    height = 250;
     VkExtent2D actualExtent = {
       static_cast<uint32_t>(width),
       static_cast<uint32_t>(height),

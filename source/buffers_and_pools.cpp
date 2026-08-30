@@ -126,10 +126,10 @@ void HelloTriangleApplication::createFramebuffers() {
     }
 }
 
-void HelloTriangleApplication::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
+/* void HelloTriangleApplication::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
     auto app = reinterpret_cast<HelloTriangleApplication*>(glfwGetWindowUserPointer(window));
     app->framebufferResized = true;
-}
+} */
 
 void HelloTriangleApplication::updateUniformBuffer(uint32_t currentImage) {
   static auto startTime = std::chrono::high_resolution_clock::now();
