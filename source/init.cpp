@@ -1,13 +1,7 @@
 #include "headers/m.h"
 
 void HelloTriangleApplication::initWindow() {
-    glfwInit();
-
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
-    window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
-    glfwSetWindowUserPointer(window, this);
-    glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+    metal_layer = ObjCInitWindowAndGetMetalLayer();
   }
 
 void HelloTriangleApplication::initVulkan() {
@@ -48,13 +42,10 @@ void HelloTriangleApplication::createInstance() {
     createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     createInfo.pApplicationInfo = &appInfo;
 
-    uint32_t glfwExtensionCount = 0;
-    const char** glfwExtensions;
+    std::vector<const char*> cocoaExtensions = {VK_KHR_SURFACE_EXTENSION_NAME,VK_EXT_METAL_SURFACE_EXTENSION_NAME};
 
-    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
-
-    createInfo.enabledExtensionCount = glfwExtensionCount;
-    createInfo.ppEnabledExtensionNames = glfwExtensions;
+    createInfo.enabledExtensionCount = cocoaExtensions.size();
+    createInfo.ppEnabledExtensionNames = cocoaExtensions.data();
 
     createInfo.enabledLayerCount = 0;
 
@@ -76,7 +67,12 @@ void HelloTriangleApplication::createInstance() {
 }
 
 void HelloTriangleApplication::createSurface() {
-  if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+
+   VkMetalSurfaceCreateInfoEXT metalSurfaceCreateInfo{};
+  metalSurfaceCreateInfo.sType = VK_STRUCTURE_TYPE_METAL_SURFACE_CREATE_INFO_EXT;
+  metalSurfaceCreateInfo.pLayer = metal_layer;
+
+  if (vkCreateMetalSurfaceEXT(instance, &metalSurfaceCreateInfo, nullptr, &surface) != VK_SUCCESS) {
     throw std::runtime_error("failed to create window surface!");
   }
 }

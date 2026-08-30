@@ -2,13 +2,14 @@
 #define M_H
 
 #include "includes.h"
+#include <QuartzCore/QuartzCore.h>
 
 class HelloTriangleApplication {
     public:
         HelloTriangleApplication();
         void run();
     private:
-        GLFWwindow* window;
+        CAMetalLayer *metal_layer;
         VkInstance instance;
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
         VkDevice device;

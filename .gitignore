@@ -1,7 +1,5 @@
 .DS_Store
-.idea
-*.log
 tmp/
-HelloTriangle
+build/
 shaders/*.spv
 local.mk

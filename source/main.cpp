@@ -1,7 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "headers/m.h"
 
-
 VkVertexInputBindingDescription Vertex::getBindingDescription() {
    VkVertexInputBindingDescription bindingDescription{};
    bindingDescription.binding = 0;
@@ -35,8 +34,7 @@ std::array<VkVertexInputAttributeDescription, 3> Vertex::getAttributeDescription
 HelloTriangleApplication::HelloTriangleApplication()
     :     framebufferResized(false),
           currentFrame(0),
-          deviceExtensions{VK_KHR_SWAPCHAIN_EXTENSION_NAME}
-    {};
+          deviceExtensions{VK_KHR_SWAPCHAIN_EXTENSION_NAME}{};
 
 void HelloTriangleApplication::run() {
     initWindow();
@@ -46,10 +44,10 @@ void HelloTriangleApplication::run() {
   }
 
   void HelloTriangleApplication::mainLoop() {
-    while (!glfwWindowShouldClose(window)) {
-      glfwPollEvents();
+   while (!ObjCShouldClose()) {
+      ObjCPollEvents();
       drawFrame();
-    }
+   }
 
     vkDeviceWaitIdle(device);
   }
@@ -160,9 +158,7 @@ void HelloTriangleApplication::run() {
 
     vkDestroyInstance(instance,nullptr);
 
-    glfwDestroyWindow(window);
-
-    glfwTerminate();
+    //TODO: DESTROY APPLE WINDOW GRACEFULLY
   }
 
   VkCommandBuffer HelloTriangleApplication::beginSingleTimeCommands() {
