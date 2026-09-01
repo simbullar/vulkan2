@@ -1,6 +1,16 @@
 #import "../headers/window_objc.h"
 #import <AppKit/AppKit.h>
 
+NSWindow *window;
+
+void ObjCGetFramebufferSize(int *width, int *height) {
+  NSRect frame = [window.contentView bounds];
+  NSSize backingSize = [window.contentView convertSizeToBacking:frame.size];
+
+  *width = (int)backingSize.width;
+  *height = (int)backingSize.height;
+}
+
 void ObjCPollEvents()
 {
     @autoreleasepool {
@@ -36,7 +46,7 @@ CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
       NSRect frame = NSMakeRect(0, 0, 350, 250);
       NSWindowStyleMask stylemask = NSWindowStyleMaskTitled | NSWindowStyleMaskResizable | NSWindowStyleMaskResizable | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
       NSBackingStoreType backing = NSBackingStoreBuffered;
-        NSWindow *window = [[NSWindow alloc] initWithContentRect:frame
+        window = [[NSWindow alloc] initWithContentRect:frame
                              styleMask:stylemask
                              backing:backing
                              defer:NO];

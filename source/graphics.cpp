@@ -67,10 +67,10 @@ void HelloTriangleApplication::cleanupSwapChain() {
 
 /* void HelloTriangleApplication::recreateSwapChain() {
   int width = 0, height = 0;
-  glfwGetFramebufferSize(window, &width, &height);
+  ObjCGetFramebufferSize(window, &width, &height);
 
   while (width == 0 || height == 0) {
-    glfwGetFramebufferSize(window, &width, &height);
+    ObjCGetFramebufferSize(&width, &height);
     glfwWaitEvents();
   }
 
@@ -111,6 +111,7 @@ VkExtent2D HelloTriangleApplication::chooseSwapExtent(const VkSurfaceCapabilitie
 
     width = 350;
     height = 250;
+
     VkExtent2D actualExtent = {
       static_cast<uint32_t>(width),
       static_cast<uint32_t>(height),
