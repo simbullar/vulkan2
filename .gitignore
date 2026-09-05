@@ -3,3 +3,5 @@ tmp/
 build/
 shaders/*.spv
 local.mk
+.cache/
+compile_commands.json
