@@ -66,7 +66,7 @@ class HelloTriangleApplication {
     };
 
     void initWindow();
-    static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
+    //static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
     void initVulkan();
     void mainLoop();
     void drawFrame();

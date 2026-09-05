@@ -11,6 +11,10 @@ void ObjCGetFramebufferSize(int *width, int *height) {
   *height = (int)backingSize.height;
 }
 
+NSApplication * ObjCGetWindowUserPointer() {
+    return NSApp;
+}
+
 void ObjCPollEvents()
 {
     @autoreleasepool {
