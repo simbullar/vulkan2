@@ -1,7 +1,27 @@
 #import "../headers/window_objc.h"
 #import <AppKit/AppKit.h>
 
-NSWindow *window;
+static NSWindow *window;
+static bool framebufferResized = false;
+static bool shouldClose = false;
+
+@interface VulkanWindowDelegate : NSObject <NSWindowDelegate>
+@end
+
+@implementation VulkanWindowDelegate
+
+- (void)windowDidResize:(NSNotification *)notification {
+  framebufferResized = true;
+}
+
+- (BOOL)windowShouldClose:(NSWindow *)sender
+{
+    shouldClose = true;
+    return NO;
+}
+@end
+
+static VulkanWindowDelegate *windowDelegate;
 
 void ObjCGetFramebufferSize(int *width, int *height) {
   NSRect frame = [window.contentView bounds];
@@ -9,10 +29,6 @@ void ObjCGetFramebufferSize(int *width, int *height) {
 
   *width = (int)backingSize.width;
   *height = (int)backingSize.height;
-}
-
-NSApplication * ObjCGetWindowUserPointer() {
-    return NSApp;
 }
 
 void ObjCPollEvents()
@@ -31,15 +47,28 @@ void ObjCPollEvents()
     }
 }
 
-bool ObjCShouldClose() {
-  @autoreleasepool {
-      if ([NSApp.delegate applicationShouldTerminate:NSApp] == NO){
-        return false;
-      } else {
-        return true;
-      }
-    }
+bool ObjCSwapchainNeedsRecreation() {
+  if (framebufferResized) {
+    framebufferResized = false;
+    return true;
+  }
+  return false;
 }
+
+bool ObjCShouldClose() {
+    return shouldClose;
+}
+
+void ObjCDestroyWindow()
+{
+    [window orderOut:nil];
+
+    [window setDelegate:nil];
+
+    windowDelegate = nil;
+    window = nil;
+}
+
 
 CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
   @autoreleasepool {
@@ -56,8 +85,24 @@ CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
                              defer:NO];
 
         [window setTitle:(@"Hello Triangle")];
+        windowDelegate = [[VulkanWindowDelegate alloc] init];
+        [window setDelegate:windowDelegate];
+
         [window.contentView setWantsLayer:YES];
         CAMetalLayer *metalLayer = [CAMetalLayer layer];
+
+
+        metalLayer.delegate = window.contentView;
+
+        metalLayer.frame = window.contentView.bounds;
+        metalLayer.autoresizingMask =
+            kCALayerWidthSizable | kCALayerHeightSizable;
+
+
+        metalLayer.contentsScale = window.contentView.window.backingScaleFactor;
+
+        metalLayer.drawableSize =[window.contentView convertSizeToBacking:window.contentView.bounds.size];
+
         [window.contentView setLayer:metalLayer];
         [window makeKeyAndOrderFront:NSApp];
         [NSApp activate];

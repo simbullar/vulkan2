@@ -14,6 +14,8 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_metal.h>
 
+#include <QuartzCore/CAMetalLayer.h>
+
 #include "window_objc.h"
 
 #include <iostream>

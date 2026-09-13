@@ -53,6 +53,7 @@ void HelloTriangleApplication::createSwapChain() {
 }
 
 void HelloTriangleApplication::cleanupSwapChain() {
+
   for (auto framebuffer : swapChainFramebuffers) {
     vkDestroyFramebuffer(device, framebuffer, nullptr);
   }
@@ -65,23 +66,29 @@ void HelloTriangleApplication::cleanupSwapChain() {
 
 }
 
-/* void HelloTriangleApplication::recreateSwapChain() {
+ void HelloTriangleApplication::recreateSwapChain() {
   int width = 0, height = 0;
-  ObjCGetFramebufferSize(window, &width, &height);
+  ObjCGetFramebufferSize(&width, &height);
+
+
 
   while (width == 0 || height == 0) {
     ObjCGetFramebufferSize(&width, &height);
-    glfwWaitEvents();
+    ObjCPollEvents();
   }
 
   vkDeviceWaitIdle(device);
+
+  vkDestroyImage(device, depthImage, nullptr);
+  vkFreeMemory(device, depthImageMemory, nullptr);
 
   cleanupSwapChain();
 
   createSwapChain();
   createImageViews();
+  createDepthResources();
   createFramebuffers();
-} */
+}
 
 VkSurfaceFormatKHR HelloTriangleApplication::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) {
   for (const auto& availableFormat : availableFormats) {
@@ -103,14 +110,8 @@ VkPresentModeKHR HelloTriangleApplication::chooseSwapPresentMode(const std::vect
 }
 
 VkExtent2D HelloTriangleApplication::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) {
-  if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
-    return capabilities.currentExtent;
-  } else {
     int width, height;
-//    glfwGetFramebufferSize(window, &width, &height);
-
-    width = 350;
-    height = 250;
+    ObjCGetFramebufferSize(&width,&height);
 
     VkExtent2D actualExtent = {
       static_cast<uint32_t>(width),
@@ -120,7 +121,6 @@ VkExtent2D HelloTriangleApplication::chooseSwapExtent(const VkSurfaceCapabilitie
     actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
     actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
     return actualExtent;
-  }
 }
 
 HelloTriangleApplication::SwapChainSupportDetails HelloTriangleApplication::querySwapChainSupport(VkPhysicalDevice device) {
