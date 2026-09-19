@@ -39,16 +39,19 @@ HelloTriangleApplication::HelloTriangleApplication()
 void HelloTriangleApplication::run() {
     initWindow();
     initVulkan();
-    mainLoop();
+    std::thread renderThread([this] {
+            mainLoop();
+        });
+    ObjCRunApplication();
+    renderThread.join();
+    printf("cleaning up");
     cleanup();
   }
 
   void HelloTriangleApplication::mainLoop() {
-   while (!ObjCShouldClose()) {
-      ObjCPollEvents();
+    while (!ObjCShouldClose()){
       drawFrame();
-   }
-
+    }
     vkDeviceWaitIdle(device);
   }
 

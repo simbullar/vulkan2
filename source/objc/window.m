@@ -16,8 +16,8 @@ static bool shouldClose = false;
 
 - (BOOL)windowShouldClose:(NSWindow *)sender
 {
-    shouldClose = true;
-    return NO;
+  shouldClose = true;
+    return YES;
 }
 @end
 
@@ -58,7 +58,9 @@ bool ObjCSwapchainNeedsRecreation() {
 bool ObjCShouldClose() {
     return shouldClose;
 }
-
+void ObjCSetShouldCloseNo() {
+    shouldClose = false;
+}
 void ObjCDestroyWindow()
 {
     [window orderOut:nil];
@@ -76,8 +78,15 @@ CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
 
       [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 
-      NSRect frame = NSMakeRect(0, 0, 350, 250);
-      NSWindowStyleMask stylemask = NSWindowStyleMaskTitled | NSWindowStyleMaskResizable | NSWindowStyleMaskResizable | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable;
+      [NSApp finishLaunching];
+
+      NSRect frame = NSMakeRect(0, 0, WIDTH, HEIGHT);
+      NSWindowStyleMask stylemask =
+          NSWindowStyleMaskTitled |
+          NSWindowStyleMaskClosable |
+          NSWindowStyleMaskMiniaturizable |
+          NSWindowStyleMaskResizable;
+
       NSBackingStoreType backing = NSBackingStoreBuffered;
         window = [[NSWindow alloc] initWithContentRect:frame
                              styleMask:stylemask
@@ -87,7 +96,6 @@ CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
         [window setTitle:(@"Hello Triangle")];
         windowDelegate = [[VulkanWindowDelegate alloc] init];
         [window setDelegate:windowDelegate];
-
         [window.contentView setWantsLayer:YES];
         CAMetalLayer *metalLayer = [CAMetalLayer layer];
 
@@ -95,17 +103,20 @@ CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
         metalLayer.delegate = window.contentView;
 
         metalLayer.frame = window.contentView.bounds;
-        metalLayer.autoresizingMask =
-            kCALayerWidthSizable | kCALayerHeightSizable;
-
 
         metalLayer.contentsScale = window.contentView.window.backingScaleFactor;
 
-        metalLayer.drawableSize =[window.contentView convertSizeToBacking:window.contentView.bounds.size];
+        metalLayer.drawableSize = [window.contentView convertSizeToBacking:window.contentView.bounds.size];
 
         [window.contentView setLayer:metalLayer];
+        [window setLevel:NSNormalWindowLevel];
         [window makeKeyAndOrderFront:NSApp];
-        [NSApp activate];
+        [NSApp activateIgnoringOtherApps:YES];
         return metalLayer;
   }
+}
+
+
+void ObjCRunApplication() {
+    [NSApp run];
 }

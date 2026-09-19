@@ -1,5 +1,5 @@
-const int WIDTH = 800;
-const int HEIGHT = 600;
+const int WIDTH = 350;
+const int HEIGHT = 250;
 
 #ifdef __cplusplus
 #include <vulkan/vulkan.h>
@@ -11,13 +11,14 @@ extern "C" {
 #import <QuartzCore/QuartzCore.h>
 #endif
 
-void ObjCPollEvents();
 bool ObjCShouldClose();
+void ObjCPollEvents();
 CAMetalLayer *ObjCInitWindowAndGetMetalLayer();
 void ObjCDestroyWindow();
 void ObjCGetFramebufferSize(int *width, int *height);
 bool ObjCSwapchainNeedsRecreation();
-
+void ObjCRunApplication();
+void ObjCSetShouldCloseNo();
 #ifdef __cplusplus
 };
 #endif
