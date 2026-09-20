@@ -1,9 +1,10 @@
 #import "../headers/window_objc.h"
-#import <AppKit/AppKit.h>
 
 static NSWindow *window;
 static bool framebufferResized = false;
 static bool shouldClose = false;
+static _Atomic(double) mouseX = 0.0;
+static _Atomic(double) mouseY = 0.0;
 
 @interface VulkanWindowDelegate : NSObject <NSWindowDelegate>
 @end
@@ -17,8 +18,20 @@ static bool shouldClose = false;
 - (BOOL)windowShouldClose:(NSWindow *)sender
 {
   shouldClose = true;
-    return YES;
+  [NSApp stop:nil];
+    return NO;
 }
+
+- (void)mouseMoved:(NSEvent *)event
+{
+    NSPoint p = [event locationInWindow];
+
+    atomic_store_explicit(&mouseX, p.x, memory_order_relaxed);
+    atomic_store_explicit(&mouseY, p.y, memory_order_relaxed);
+
+    NSLog(@"x = %f, y = %f", p.x, p.y);
+}
+
 @end
 
 static VulkanWindowDelegate *windowDelegate;
@@ -92,7 +105,6 @@ CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
                              styleMask:stylemask
                              backing:backing
                              defer:NO];
-
         [window setTitle:(@"Hello Triangle")];
         windowDelegate = [[VulkanWindowDelegate alloc] init];
         [window setDelegate:windowDelegate];
@@ -112,6 +124,7 @@ CAMetalLayer *ObjCInitWindowAndGetMetalLayer() {
         [window setLevel:NSNormalWindowLevel];
         [window makeKeyAndOrderFront:NSApp];
         [NSApp activateIgnoringOtherApps:YES];
+
         return metalLayer;
   }
 }

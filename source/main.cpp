@@ -44,7 +44,6 @@ void HelloTriangleApplication::run() {
         });
     ObjCRunApplication();
     renderThread.join();
-    printf("cleaning up");
     cleanup();
   }
 
