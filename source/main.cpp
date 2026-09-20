@@ -57,6 +57,10 @@ void HelloTriangleApplication::run() {
   void HelloTriangleApplication::drawFrame() {
      vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
+     #ifdef LOGSPEED
+     clock_t before = clock();
+     #endif
+
      uint32_t imageIndex;
      VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
@@ -111,7 +115,14 @@ void HelloTriangleApplication::run() {
      } else if (result != VK_SUCCESS) {
        throw std::runtime_error("failed to present swap chain image!");
      }
-
+     #ifdef LOGSPEED
+     HelloTriangleApplication::b++;
+     if ( HelloTriangleApplication::b == 100){
+        clock_t difference = clock() - before;
+        printf("FPS: %lu\n", CLOCKS_PER_SEC/difference);
+        HelloTriangleApplication::b = 0;
+    };
+     #endif
      currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
    }
 

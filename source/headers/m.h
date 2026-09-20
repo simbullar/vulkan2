@@ -49,6 +49,7 @@ class HelloTriangleApplication {
 
     bool framebufferResized;
     uint32_t currentFrame;
+    uint8 b = 0;
 
     struct QueueFamilyIndices {
       std::optional<uint32_t> graphicsFamily;

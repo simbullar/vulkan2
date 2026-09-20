@@ -30,6 +30,8 @@
 #include <cstdlib>
 #include <fstream>
 
+#include <time.h>
+
 const int MAX_FRAMES_IN_FLIGHT = 2;
 
 struct Vertex {
