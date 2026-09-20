@@ -21,7 +21,9 @@ CPP_SOURCES := $(wildcard source/*.cpp)
 CPP_OBJS := $(patsubst source/%.cpp,build/obj/%.o,$(CPP_SOURCES))
 OBJC_SOURCES := $(wildcard source/objc/*.m)
 OBJC_OBJS := $(patsubst source/objc/%.m, build/obj/%.o, $(OBJC_SOURCES))
-OBJS := $(CPP_OBJS) $(OBJC_OBJS)
+SHADERS_SOURCES := $(wildcard shaders/shader.*)
+SHADERS_OBJS := $(patsubst shaders/shader.%,build/shaders/%.spv,$(SHADERS_SOURCES))
+OBJS := $(CPP_OBJS) $(OBJC_OBJS) $(SHADERS_OBJS)
 
 .PHONY: all clear shaders
 
@@ -36,8 +38,12 @@ build/obj/%.o: source/%.cpp
 build/obj/%.o: source/objc/%.m
 	gcc -c -o $@ $<
 
+build/shaders/%.spv: shaders/shader.%
+	glslc $< -o $@
+
 clear:
-	-rm HelloTriangle
+	-rm build/a.out
 	-rm build/obj/*
+	-rm build/shaders/*
 shaders:
 	./shaders/compile.sh
